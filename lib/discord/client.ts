@@ -3,6 +3,7 @@ import { env } from 'process';
 import fetch from 'node-fetch';
 
 import { Token, User as DiscordUser } from '.';
+import { handleHttpError } from '../http';
 
 export class DiscordClient {
   constructor(
@@ -44,6 +45,7 @@ export class DiscordClient {
         code: code,
       }),
     })
+      .then(handleHttpError)
       .then(response => response.json() as Promise<Record<string, string | number>>)
       .then(
         json =>
@@ -67,6 +69,7 @@ export class DiscordUserClient {
         Authorization: `${this.token.tokenType} ${this.token.accessToken}`,
       },
     })
+      .then(handleHttpError)
       .then(response => response.json())
       .then(json => json as T);
   }
@@ -88,6 +91,7 @@ export class DiscordBotClient {
         'Content-Type': 'application/json',
       },
     })
+      .then(handleHttpError)
       .then(response => (response.status === 204 ? null : response.json()))
       .then(json => json as Res);
   }
