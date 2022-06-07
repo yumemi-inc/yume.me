@@ -11,12 +11,14 @@
     "lint": "next lint && prettier -c ./**/*.tsx"
   },
   "dependencies": {
+    "@aws-amplify/auth": "^4.5.6",
     "@chakra-ui/react": "^2.1.2",
     "@chakra-ui/system": "^2.1.1",
     "@chakra-ui/theme-tools": "^2.0.1",
     "@chakra-ui/utils": "^2.0.1",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
+    "aws-amplify": "^4.3.24",
     "framer-motion": "^6.3.10",
     "next": "^12.1.6",
     "react": "^18.1.0",
