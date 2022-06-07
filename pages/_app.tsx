@@ -6,8 +6,8 @@ import { Amplify, Auth } from 'aws-amplify';
 import { AuthOptions } from '@aws-amplify/auth/lib-esm/types';
 import NextStorage from 'amplify-auth-next-storage';
 
-const hostname = 'localhost';
-const basename = `http://${hostname}:3000/`;
+const hostname = process.env.NEXT_PUBLIC_HOSTNAME as string;
+const basename = process.env.NEXT_PUBLIC_BASENAME as string;
 const awsConfig: AuthOptions = {
   region: process.env.NEXT_PUBLIC_AWS_REGION,
   userPoolId: process.env.NEXT_PUBLIC_AWS_COGNITO_USER_POOL_ID,

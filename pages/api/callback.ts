@@ -28,8 +28,8 @@ const Callback: NextApiHandler = async (req: NextApiRequest, res: NextApiRespons
 
   const accessToken = req.cookies[accessTokenKey] as string;
   const jwks = jwksClient({
-    jwksUri: env.AWS_COGNITO_JWKS_URL ?? '',
-    getKeysInterceptor: () => JSON.parse(env.AWS_COGNITO_JWKS ?? '{}'),
+    jwksUri: env.COGNITO_JWKS_URL ?? '',
+    getKeysInterceptor: () => JSON.parse(env.COGNITO_JWKS ?? '{}'),
   });
 
   try {
