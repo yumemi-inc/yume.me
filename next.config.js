@@ -1,0 +1,13 @@
+module.exports = {
+  env: {
+    COGNITO_JWKS_URL: process.env.COGNITO_JWKS_URL,
+    COGNITO_JWKS: process.env.COGNITO_JWKS,
+    DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
+    DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
+    DISCORD_CALLBACK_URL: process.env.DISCORD_CALLBACK_URL,
+    DISCORD_BOT_TOKEN: process.env.DISCORD_BOT_TOKEN,
+    DISCORD_GUILD_ID: process.env.DISCORD_GUILD_ID,
+    DISCORD_ROLE_ID: process.env.DISCORD_ROLE_ID,
+    DISCORD_CHANNEL_ID: process.env.DISCORD_CHANNEL_ID,
+  },
+};
