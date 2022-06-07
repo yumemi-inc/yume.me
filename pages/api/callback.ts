@@ -47,23 +47,27 @@ const Callback: NextApiHandler = async (req: NextApiRequest, res: NextApiRespons
     return void res.redirect('/?failed=' + encodeURIComponent(err as string));
   }
 
-  const register = req.query as Registration;
-  const discordClient = createDiscordClient();
-  const discordToken = await discordClient.getToken(register.code);
-  const discordUser = await discordClient.authenticate(discordToken).getUser();
-  const user: User = {
-    id: discordUser.id,
-    name: `${discordUser.username}#${discordUser.discriminator}`,
-    email: discordUser.email,
-    avatarUrl: `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.png`,
-  };
+  try {
+    const register = req.query as Registration;
+    const discordClient = createDiscordClient();
+    const discordToken = await discordClient.getToken(register.code);
+    const discordUser = await discordClient.authenticate(discordToken).getUser();
+    const user: User = {
+      id: discordUser.id,
+      name: `${discordUser.username}#${discordUser.discriminator}`,
+      email: discordUser.email,
+      avatarUrl: `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.png`,
+    };
 
-  const discordBotClient = createDiscordBotClient();
-  await discordBotClient.putGuildMemberRole(env.DISCORD_GUILD_ID ?? '', user.id, env.DISCORD_ROLE_ID ?? '');
-  await discordBotClient.postChannelMessage(
-    env.DISCORD_CHANNEL_ID ?? '',
-    `<@${user.id}> has been verified as a member!`,
-  );
+    const discordBotClient = createDiscordBotClient();
+    await discordBotClient.putGuildMemberRole(env.DISCORD_GUILD_ID ?? '', user.id, env.DISCORD_ROLE_ID ?? '');
+    await discordBotClient.postChannelMessage(
+      env.DISCORD_CHANNEL_ID ?? '',
+      `<@${user.id}> has been verified as a member!`,
+    );
+  } catch (err) {
+    return void res.redirect('/?failed=' + encodeURIComponent((err as Error).message));
+  }
 
   res.redirect('/?success');
 };
