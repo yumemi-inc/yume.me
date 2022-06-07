@@ -1,6 +1,6 @@
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { Avatar, Box, Button, Flex, Heading, Text } from '@chakra-ui/react';
+import { Alert, AlertDescription, AlertIcon, Avatar, Box, Button, Flex, Heading, Text } from '@chakra-ui/react';
 import { Auth } from 'aws-amplify';
 import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
 
@@ -11,11 +11,18 @@ const Index: NextPage = () => {
   const user = useCurrentUser();
   const isLoggedIn = !!user;
   const isSucceeded = router.query['success'] !== undefined;
+  const error = router.query['failed'];
 
   return (
     <Flex align="center" justify="center" height="100vh">
       <Box bg="white" w={384} p={8} rounded={8} boxShadow="md">
         <Heading size="md">Welcome</Heading>
+        {error && (
+          <Alert status="error" my={3}>
+            <AlertIcon />
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
         {isLoggedIn ? (
           <>
             <Text py={3}>Hello,</Text>

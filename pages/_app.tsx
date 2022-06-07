@@ -4,8 +4,10 @@ import { mode, StyleFunctionProps } from '@chakra-ui/theme-tools';
 import { Dict } from '@chakra-ui/utils';
 import { Amplify, Auth } from 'aws-amplify';
 import { AuthOptions } from '@aws-amplify/auth/lib-esm/types';
+import NextStorage from 'amplify-auth-next-storage';
 
-const basename = `http://localhost:3000/`;
+const hostname = 'localhost';
+const basename = `http://${hostname}:3000/`;
 const awsConfig: AuthOptions = {
   region: process.env.NEXT_PUBLIC_AWS_REGION,
   userPoolId: process.env.NEXT_PUBLIC_AWS_COGNITO_USER_POOL_ID,
@@ -17,6 +19,9 @@ const awsConfig: AuthOptions = {
     redirectSignIn: basename,
     redirectSignOut: basename,
   },
+  storage: new NextStorage(undefined, {
+    domain: hostname,
+  }),
 };
 
 Amplify.configure(awsConfig);
