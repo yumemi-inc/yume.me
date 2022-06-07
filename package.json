@@ -1,9 +1,9 @@
 {
-  "name": "yume.me",
+  "name": "@yumemi/yumeme",
   "version": "1.0.0",
   "description": "Verifies membership of Google Workspace for joining Discord guilds as a member themselves.",
   "author": "Naoki Ikeguchi <n_ikeguchi@yumemi.co.jp>",
-  "license": "proprietary",
+  "license": "MIT",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
