@@ -5,6 +5,7 @@ import { Auth } from 'aws-amplify';
 import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
 
 import { useCurrentUser } from '../lib/authn';
+import { CheckIcon } from '@chakra-ui/icons';
 
 const Index: NextPage = () => {
   const router = useRouter();
@@ -35,7 +36,10 @@ const Index: NextPage = () => {
             </Flex>
             {isSucceeded ? (
               <>
-                <Text pt={5}>You are ready to go!</Text>
+                <Flex align="center" gap={3} mt={5}>
+                  <CheckIcon color="green.500" />
+                  <Text>You are ready to go!</Text>
+                </Flex>
               </>
             ) : (
               <>
