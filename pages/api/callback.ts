@@ -47,7 +47,7 @@ const Callback: NextApiHandler = async (req: NextApiRequest, res: NextApiRespons
     return void res.redirect('/?failed=' + encodeURIComponent(err as string));
   }
 
-  const register = req.body as Registration;
+  const register = req.query as Registration;
   const discordClient = createDiscordClient();
   const discordToken = await discordClient.getToken(register.code);
   const discordUser = await discordClient.authenticate(discordToken).getUser();
@@ -60,6 +60,10 @@ const Callback: NextApiHandler = async (req: NextApiRequest, res: NextApiRespons
 
   const discordBotClient = createDiscordBotClient();
   await discordBotClient.putGuildMemberRole(env.DISCORD_GUILD_ID ?? '', user.id, env.DISCORD_ROLE_ID ?? '');
+  await discordBotClient.postChannelMessage(
+    env.DISCORD_CHANNEL_ID ?? '',
+    `<@${user.id}> has been verified as a member!`,
+  );
 
   res.redirect('/?success');
 };

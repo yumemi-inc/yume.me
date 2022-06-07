@@ -1,5 +1,7 @@
 import { env } from 'process';
 
+import fetch from 'node-fetch';
+
 import { Token, User as DiscordUser } from '.';
 
 export class DiscordClient {
@@ -42,15 +44,15 @@ export class DiscordClient {
         code: code,
       }),
     })
-      .then(response => response.json())
+      .then(response => response.json() as Promise<Record<string, string | number>>)
       .then(
         json =>
           <Token>{
             accessToken: json['access_token'],
             refreshToken: json['refresh_token'],
-            expiresIn: json['expires_in'],
+            expiresIn: json['expires_in'] as number,
             tokenType: json['token_type'],
-            scopes: json['scope']?.split(' '),
+            scopes: (json['scope'] as string | undefined)?.split(' '),
           },
       );
   }
@@ -75,22 +77,29 @@ export class DiscordUserClient {
 }
 
 export class DiscordBotClient {
-  constructor(private readonly token: string, private readonly baseUrl: string = 'https://discord.com/api/') {}
+  constructor(private readonly token: string, private readonly baseUrl: string = 'https://discord.com/api/v10/') {}
 
-  put<Req, Res>(endpoint: string, body?: Req): Promise<Res> {
+  request<Req, Res>(method: string, endpoint: string, body?: Req): Promise<Res> {
     return fetch(this.baseUrl + endpoint, {
-      method: 'PUT',
+      method: method,
       body: JSON.stringify(body),
       headers: {
         Authorization: `Bot ${this.token}`,
+        'Content-Type': 'application/json',
       },
     })
-      .then(response => response.json())
+      .then(response => (response.status === 204 ? null : response.json()))
       .then(json => json as Res);
   }
 
   putGuildMemberRole(guildId: string, userId: string, roleId: string) {
-    return this.put(`guilds/${guildId}/members/${userId}/roles/${roleId}`);
+    return this.request('PUT', `guilds/${guildId}/members/${userId}/roles/${roleId}`);
+  }
+
+  postChannelMessage(channelId: string, message: string) {
+    return this.request('POST', `channels/${channelId}/messages`, {
+      content: message,
+    });
   }
 }
 
